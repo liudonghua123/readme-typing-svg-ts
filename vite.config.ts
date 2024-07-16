@@ -5,6 +5,6 @@ export default defineConfig({
   base: "./",
   plugins: [vue()],
   define: {
-    window: true,
+    browser: true,
   },
 });

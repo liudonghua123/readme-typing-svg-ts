@@ -1,7 +1,7 @@
 import { SVG, registerWindow } from "@svgdotjs/svg.js";
 
 // check if we are in a node environment
-if (typeof window === "undefined") {
+if (typeof browser === "undefined") {
   const { createSVGWindow } = await import("svgdom")
   // returns a window with a document and an svg root node
   const window = createSVGWindow();
