@@ -11,26 +11,26 @@ if (typeof browser === "undefined") {
 }
 
 export interface TypingSVGOptions {
-  text: string[];
-  speed: number;
-  fontSize: number;
-  fontWeight: number;
-  fontFamily: string;
-  letterSpacing: string;
-  color: string;
-  backgroundColor: string;
-  width: number;
-  height: number;
-  loop: boolean;
-  cursor: boolean;
-  cursorChar: string;
-  pause: number;
-  duration: number;
-  horizontallyCentered: boolean;
-  verticallyCentered: boolean;
-  multiline: boolean;
-  repeat: boolean;
-  random: boolean;
+  text?: string[];
+  speed?: number;
+  fontSize?: number;
+  fontWeight?: number;
+  fontFamily?: string;
+  letterSpacing?: string;
+  color?: string;
+  backgroundColor?: string;
+  width?: number;
+  height?: number;
+  loop?: boolean;
+  cursor?: boolean;
+  cursorChar?: string;
+  pause?: number;
+  duration?: number;
+  horizontallyCentered?: boolean;
+  verticallyCentered?: boolean;
+  multiline?: boolean;
+  repeat?: boolean;
+  random?: boolean;
 }
 
 export function createTypingSVG(options: TypingSVGOptions): SVGSVGElement {
