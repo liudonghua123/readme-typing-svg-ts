@@ -1,6 +1,7 @@
 import { SVG, registerWindow } from "@svgdotjs/svg.js";
 
-// check if we are in a node environment
+// check if we are in a node environment, define browser in vite.config.ts for conditional import of svgdom
+// @ts-ignore
 if (typeof browser === "undefined") {
   const { createSVGWindow } = await import("svgdom")
   // returns a window with a document and an svg root node
