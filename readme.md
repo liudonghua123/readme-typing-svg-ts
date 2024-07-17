@@ -30,6 +30,8 @@ yarn add readme-typing-svg-ts
 
 ## Usage
 
+### LIB usage
+
 Import the library and generate a typing SVG:
 
 ```typescript
@@ -44,16 +46,49 @@ console.log(svg);
 process.exit(0);
 ```
 
+### CLI usage
+
+Install the package globally:
+
+```shell
+npm install -g readme-typing-svg-ts # or yarn global add readme-typing-svg-ts
+```
+
+```shell
+> readme-typing-svg-ts --help
+Usage: cli [options]
+
+Options:
+  -t, --text <items>             Text to type (default: "Hello, World!")
+  -s, --size <number>            Font size (default: "20")
+  -m, --font <string>            Font family (default: "Fira Code")
+  -l, --letter-spacing <string>  Letter spacing (default: "normal")
+  -c, --color <color>            Text color (default: "#36BCF7")
+  -b, --background <color>       Background color (default: "#00000000")
+  --width <number>               SVG width (default: "400")
+  --height <number>              SVG height (default: "50")
+  --pause <number>               Pause between texts in ms (default: "1000")
+  --duration <number>            Duration per line in ms (default: "5000")
+  --center                       Horizontally center text (default: false)
+  --vCenter                      Vertically center text (default: false)
+  --multiline                    Each sentence on a new line (default: false)
+  --repeat                       Repeat text (default: true)
+  -o, --output <path>            Output path (default: "typing.svg")
+  -h, --help                     display help for command
+
+> readme-typing-svg-ts -t "hello,world"
+SVG file created at D:\code\node\readme-typing-svg-ts\examples\typing.svg
+
+> 
+```
+
 ### Parameters
 
-- **text**: The text to be typed out.
-- **speed**: Typing speed in milliseconds per character.
-- **loop**: Whether the animation should loop (default: `false`).
-- **cursor**: Whether to show the cursor (default: `true`).
+See the full available config options on [src/lib.ts](src/lib.ts).
 
 ## Examples
 
-See the [examples](https://github.com/liudonghua123/readme-typing-svg-ts/tree/main/examples) directory for sample usage.
+See the [examples/simple_demo.ts](examples/simple_demo.ts) directory for sample usage.
 
 ## Development
 
@@ -68,7 +103,8 @@ npm install
 Run the development server:
 
 ```bash
-npm run dev
+npm run build # build the static files served via gh-pages
+npm run build-lib # build the lib and cli
 ```
 
 Run tests:
