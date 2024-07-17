@@ -1,6 +1,6 @@
 {
   "name": "readme-typing-svg-ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "dist/typing-svg.es.js",
   "types": "dist/types/lib.d.ts",
@@ -19,16 +19,12 @@
     "test": "echo OK"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.2.4",
     "commander": "^9.0.0",
-    "svgdom": "^0.1.19",
     "vue": "^3.4.31"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@types/svgdom": "^0.1.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.0.0",
-    "vite": "^5.0.0"
+    "vite": "^5.3.4"
   }
 }

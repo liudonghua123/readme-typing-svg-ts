@@ -11,20 +11,16 @@
         <button @click="addLine" class="add-line-button">+ Add line</button>
         <h2>Options</h2>
         <div class="form-group">
-          <label for="fontFamily">Font family</label>
-          <input type="text" id="fontFamily" v-model="form.fontFamily" />
+          <label for="font">Font</label>
+          <input type="text" id="font" v-model="form.font" />
         </div>
         <div class="form-group">
-          <label for="speed">Speed</label>
-          <input type="number" id="speed" v-model="form.speed" />
+          <label for="weight">Font weight</label>
+          <input type="number" id="weight" v-model="form.weight" />
         </div>
         <div class="form-group">
-          <label for="fontWeight">Font weight</label>
-          <input type="number" id="fontWeight" v-model="form.fontWeight" />
-        </div>
-        <div class="form-group">
-          <label for="fontSize">Font size</label>
-          <input type="number" id="fontSize" v-model="form.fontSize" />
+          <label for="size">Font size</label>
+          <input type="number" id="size" v-model="form.size" />
         </div>
         <div class="form-group">
           <label for="letterSpacing">Letter spacing</label>
@@ -43,19 +39,19 @@
           <input type="color" id="color" v-model="form.color" />
         </div>
         <div class="form-group">
-          <label for="backgroundColor">Background color</label>
-          <input type="color" id="backgroundColor" v-model="form.backgroundColor" />
+          <label for="background">Background color</label>
+          <input type="color" id="background" v-model="form.background" />
         </div>
         <div class="form-group">
-          <label for="horizontallyCentered">Horizontally Centered</label>
-          <select v-model="form.horizontallyCentered">
+          <label for="center">Horizontally Centered</label>
+          <select v-model="form.center">
             <option value="false">false</option>
             <option value="true">true</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="verticallyCentered">Vertically Centered</label>
-          <select v-model="form.verticallyCentered">
+          <label for="vCenter">Vertically Centered</label>
+          <select v-model="form.vCenter">
             <option value="false">false</option>
             <option value="true">true</option>
           </select>
@@ -75,13 +71,6 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="random">Random</label>
-          <select v-model="form.random">
-            <option value="false">false</option>
-            <option value="true">true</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label for="width">Width</label>
           <input type="number" id="width" v-model="form.width" />
         </div>
@@ -89,7 +78,8 @@
           <label for="height">Height</label>
           <input type="number" id="height" v-model="form.height" />
         </div>
-        <button @click="resetForm" class="reset-button">Reset</button>
+        <button @click="reset" class="reset-button">Reset</button>
+        <button @click="copyPermalink" class="copy-permalink-button">Copy Permalink</button>
       </form>
       <div class="preview-section">
         <h2>Preview</h2>
@@ -107,32 +97,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { createTypingSVG, TypingSVGOptions } from "./lib";
+import { createTypingSVG, defaultConfig, Config } from "./lib";
+
 import { onMounted } from "vue";
 
-const defaultValue: TypingSVGOptions = {
-  text: ["The five boxing wizards jump quickly"],
-  speed: 100,
-  fontFamily: "Fira Code",
-  fontWeight: 400,
-  fontSize: 24,
-  letterSpacing: "normal",
-  color: "#36BCF7FF",
-  backgroundColor: "#00000000",
-  width: 435,
-  height: 100,
-  loop: true,
-  cursor: true,
-  cursorChar: "|",
-  pause: 1000,
-  duration: 5000,
-  horizontallyCentered: false,
-  verticallyCentered: false,
-  multiline: false,
-  repeat: false,
-  random: false,
-};
-
+const defaultValue = { ...defaultConfig, text: ["hello", "world"] };
 const form = ref(defaultValue);
 const markdownCode = ref("");
 const htmlCode = ref("");
@@ -143,56 +112,42 @@ const addLine = (e: Event) => {
   form.value.text.push("");
 };
 
-const resetForm = () => {
+const reset = () => {
   form.value = defaultValue;
 };
 
-const generateTypingSVG = () => {
-  const svgOptions: TypingSVGOptions = {
+const _generateTypingSVG = () => {
+  const svgOptions: Config = {
     ...form.value,
-    text: form.value.text.filter((line) => line.trim() !== ""),
   };
-  const svg = createTypingSVG(svgOptions);
+  const text = form.value.text.filter((line) => line.trim() !== "");
+  const svg = createTypingSVG(text, svgOptions);
   return svg;
 };
 
-const renderPreview = (svg: SVGSVGElement) => {
-  const preview = document.getElementById("preview");
-  if (preview) {
-    preview.innerHTML = "";
-    preview.appendChild(svg);
-  }
-  return svg;
-};
-
-const renderMarkdownAndHTML = (svg: SVGSVGElement) => {
+const _renderMarkdownAndHTML = (svg: string) => {
   const queryParams = new URLSearchParams({
     text: form.value.text.join("\n"),
-    fontFamily: form.value.fontFamily,
-    speed: form.value.speed.toString(),
-    fontWeight: form.value.fontWeight.toString(),
-    fontSize: form.value.fontSize.toString(),
+    font: form.value.font,
+    fontCSS: form.value.fontCSS?.toString(),
+    size: form.value.size?.toString(),
     letterSpacing: form.value.letterSpacing,
     color: form.value.color,
-    backgroundColor: form.value.backgroundColor,
-    width: form.value.width.toString(),
-    height: form.value.height.toString(),
-    loop: form.value.loop.toString(),
-    cursor: form.value.cursor.toString(),
-    cursorChar: form.value.cursorChar,
-    pause: form.value.pause.toString(),
-    duration: form.value.duration.toString(),
-    horizontallyCentered: form.value.horizontallyCentered.toString(),
-    verticallyCentered: form.value.verticallyCentered.toString(),
-    multiline: form.value.multiline.toString(),
-    repeat: form.value.repeat.toString(),
-    random: form.value.random.toString(),
-  } as Record<keyof TypingSVGOptions, string>);
+    background: form.value.background,
+    width: form.value.width?.toString(),
+    height: form.value.height?.toString(),
+    pause: form.value.pause?.toString(),
+    duration: form.value.duration?.toString(),
+    center: form.value.center?.toString(),
+    vCenter: form.value.vCenter?.toString(),
+    multiline: form.value.multiline?.toString(),
+    repeat: form.value.repeat?.toString(),
+  } as Record<keyof Config, string>);
 
   // filter out undefined/null or default values
   const queryParamsFilted = new URLSearchParams();
   queryParams.forEach((value, key) => {
-    if (value && value !== new String(defaultValue[key as keyof TypingSVGOptions]).toString()) {
+    if (value && value !== new String(defaultValue[key as keyof Config]).toString()) {
       queryParamsFilted.append(key, value);
     }
   });
@@ -200,10 +155,26 @@ const renderMarkdownAndHTML = (svg: SVGSVGElement) => {
   const baseUrl = "https://liudonghua123.github.io/readme-typing-svg-ts";
   const queryString = queryParamsFilted.toString();
   const url = `${baseUrl}?${queryString}`;
-  const imageDataUrl = `data:image/svg+xml;base64,${btoa(svg.outerHTML)}`;
+  const imageDataUrl = `data:image/svg+xml;base64,${btoa(svg)}`;
 
   markdownCode.value = `[![Typing SVG](${imageDataUrl})](${url})`;
   htmlCode.value = `<a href="${url}"><img src="${imageDataUrl}" alt="Typing SVG" /></a>`;
+};
+
+const renderPreview = () => {
+  const svg = _generateTypingSVG();
+  console.info(`renderPreview svg: ${svg}`);
+  const preview = document.getElementById("preview");
+  if (preview) {
+    preview.innerHTML = svg;
+  }
+  _renderMarkdownAndHTML(svg);
+};
+
+const copyPermalink = () => {
+  navigator.clipboard.writeText(location.href).then(() => {
+    alert("Copied to clipboard!");
+  });
 };
 
 const copyToClipboard = (text: string) => {
@@ -219,9 +190,7 @@ onMounted(() => {
   if (text.length > 0) {
     form.value["text"] = text;
   }
-  const svg = generateTypingSVG();
-  renderPreview(svg);
-  renderMarkdownAndHTML(svg);
+  renderPreview();
 });
 </script>
 
@@ -243,6 +212,10 @@ onMounted(() => {
     flex-direction: row;
     justify-content: space-between;
   }
+}
+
+#preview {
+  margin: 0 auto 20px;
 }
 
 .form-section,
@@ -300,6 +273,7 @@ h2 {
 
 .add-line-button,
 .reset-button,
+.copy-permalink-button,
 .generate-button,
 .markdown-button,
 .html-button,
@@ -322,7 +296,10 @@ h2 {
 
 .add-line-button:hover,
 .reset-button:hover,
+.copy-permalink-button:hover,
 .generate-button:hover,
+.markdown-button:hover,
+.html-button:hover,
 .copy-button:hover {
   background: #0056b3;
 }
