@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createTypingSVG, defaultConfig, Config } from "./lib";
+import { createTypingSVG, defaultConfig, Config } from "./lib.js";
 import { writeFile } from "fs/promises";
 import { resolve } from "path";
 import { Command } from "commander";
